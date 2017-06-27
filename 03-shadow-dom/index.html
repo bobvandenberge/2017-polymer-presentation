@@ -3,13 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Shadow DOM Demo</title>
+
+    <style>
+        html {
+            --text-color: blue;
+        }
+        h1 {
+            color: red;
+        }
+    </style>
 </head>
 <body>
+
+    <h1>Hi Light DOM</h1>
 
     <div id="target"></div>
 
     <script>
-        
+        var target = document.querySelector("#target");
+        var shadow = target.attachShadow({mode: 'open'});
+        shadow.innerHTML = `
+            <style>
+                :host {
+                    display: block;
+                    color: var(--text-color);
+                }
+            </style>
+            <h1>Hi Shadow DOM</h1>
+            `;
     </script>
 </body>
 </html>
