@@ -6,10 +6,26 @@
 </head>
 <body>
 
+    <button onclick="stamp()">Stamp</button>
 
+    <div id="target"></div>
+
+    <template id="blueprint">
+        <h1>Hello World!</h1>
+        <script>alert('Hi');</script>
+    </template>
 
 <script>
 
+    function stamp() {
+        var blueprint = document.querySelector('#blueprint');
+
+        var instance = document.importNode(blueprint.content, true);
+
+        var target = document.querySelector('#target');
+
+        target.appendChild(instance);
+    }
 </script>
 
 </body>
