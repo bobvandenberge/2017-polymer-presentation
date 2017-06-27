@@ -6,8 +6,16 @@
 </head>
 <body>
 
+    <my-element></my-element>
+
     <script>
-        
+        class MyElement extends HTMLElement {
+            connectedCallback() {
+                this.innerHTML = '<h1>Hello World</h1>';
+            }
+        }
+
+        window.customElements.define('my-element', MyElement);
     </script>
 
 </body>
