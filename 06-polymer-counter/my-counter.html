@@ -1,0 +1,42 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="my-counter">
+    <template>
+        <button on-click="upCounter">Up</button>
+        <span>[[count]] [[countLabel]]</span>
+    </template>
+
+    <script>
+        class MyCounter extends Polymer.Element {
+            static get is() {return 'my-counter';}
+
+            static get properties() {
+                return {
+                    count: {
+                        type: Number,
+                        value: 0,
+                        reflectToAttribute: true
+                    },
+                    countLabel: {
+                        type: String,
+                        computed: '_getCountLabel(count)'
+                    }
+                }
+            }
+
+            upCounter() {
+                this.count++;
+            }
+
+            _getCountLabel(count) {
+                if (count === 1) {
+                    return "item";
+                } else {
+                    return "items";
+                }
+            }
+        }
+
+        customElements.define(MyCounter.is, MyCounter);
+    </script>
+</dom-module>
