@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Polymer webcomponents Demo</title>
+    <link rel="import" href="../bower_components/polymer/polymer-element.html"/>
+    <link rel="import" href="currency-exchange.html"/>
+</head>
+<body>
+
+    <!--
+        <currency-exchange from="EUR" to="USD"></currency-exchange> should output
+        the current exchange rate between EUR and USD.
+
+        CORS enabled url: https://crossorigin.me/http://api.fixer.io/latest?base=BASE_HERE&symbols=SYMBOL_HERE
+    -->
+
+    <my-app></my-app>
+
+    <dom-module id="my-app">
+        <template>
+            <currency-exchange from="EUR" to="USD"></currency-exchange>
+        </template>
+
+        <script>
+            class MyApp extends Polymer.Element {
+                static get is() {
+                    return 'my-app';
+                }
+            }
+
+            customElements.define(MyApp.is, MyApp);
+        </script>
+    </dom-module>
+
+</body>
+</html>
