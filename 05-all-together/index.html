@@ -3,8 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <title>All Together Demo</title>
+    <style>
+        html {
+            --h1-color: blue;
+        }
+    </style>
 </head>
 <body>
 
+    <my-counter></my-counter>
+
+    <template id="my-counter">
+        <style>
+            h1 {
+                color: var(--h1-color);
+            }
+        </style>
+        <button id="button">Up</button>
+        <span id="value"></span>
+    </template>
+
+    <script>
+        class MyCounter extends HTMLElement {
+            constructor() {
+                super();
+
+                // Attach Shadow DOM
+                this.attachShadow({mode: 'open'});
+                const blueprint = document.querySelector('#my-counter');
+                const instance = document.importNode(blueprint.content, true);
+                this.shadowRoot.appendChild(instance);
+
+                let myCounter = this;
+                this.shadowRoot.querySelector('#button').addEventListener('click', function() {
+                    myCounter.count++;
+                });
+
+                this._count = 0;
+            }
+
+            static get observedAttributes() {
+                return ['count'];
+            }
+
+            attributeChangedCallback(attr, oldValue, newValue) {
+                if(attr === 'count' && oldValue !== newValue) {
+                    this.count = newValue;
+                }
+            }
+
+            set count(value) {
+                this.shadowRoot.querySelector('#value').textContent = value;
+                this.setAttribute('count', value);
+                this._count = value;
+            }
+
+            get count() {
+                return this._count;
+            }
+        }
+
+        customElements.define('my-counter', MyCounter);
+    </script>
 </body>
 </html>
