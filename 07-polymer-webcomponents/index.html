@@ -3,16 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Polymer webcomponents Demo</title>
+    <link rel="import" href="../bower_components/polymer/polymer-element.html"/>
+    <link rel="import" href="../bower_components/paper-input/paper-input.html"/>
+    <link rel="import" href="../bower_components/paper-button/paper-button.html"/>
     <link rel="import" href="currency-exchange.html"/>
 </head>
 <body>
 
     <!--
         <currency-exchange from="EUR" to="USD"></currency-exchange> should output
-        the current exchange rate between EUR and USD
+        the current exchange rate between EUR and USD.
+
+        CORS enabled url: https://crossorigin.me/http://api.fixer.io/latest?base=BASE_HERE&symbols=SYMBOL_HERE
     -->
 
-    <currency-exchange></currency-exchange>
+    <my-app></my-app>
+
+    <dom-module id="my-app">
+        <template>
+            <paper-input label="from" value="{{from}}">
+                <iron-icon icon="mail" slot="prefix"></iron-icon>
+            </paper-input>
+            <paper-input label="to" value="{{to}}">
+                <iron-icon icon="mail" slot="prefix"></iron-icon>
+            </paper-input>
+            <paper-button raised on-click="update">Update</paper-button>
+            <currency-exchange id="exchange" from="[[from]]" to="[[to]]"></currency-exchange>
+        </template>
+
+        <script>
+            class MyApp extends Polymer.Element {
+                static get is() {
+                    return 'my-app';
+                }
+
+                update() {
+                    this.$.exchange.update();
+                }
+            }
+
+            customElements.define(MyApp.is, MyApp);
+        </script>
+    </dom-module>
 
 </body>
 </html>

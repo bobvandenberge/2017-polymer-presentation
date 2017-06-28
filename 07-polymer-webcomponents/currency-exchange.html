@@ -1,14 +1,59 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html"/>
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html"/>
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html"/>
 
 <dom-module id="currency-exchange">
 
     <template>
-        Todo
+        <iron-ajax
+                id="request"
+                url="https://cors-anywhere.herokuapp.com/http://api.fixer.io/latest?base=[[from]]&symbols=[[to]]"
+                handle-as="json"
+                last-response="{{data}}"
+                debounce-duration="300"></iron-ajax>
+
+        <template is="dom-if" if="[[toRate]]">
+            <div>
+                <dl>
+                    <dt>[[from]]</dt>
+                    <dd>1.00</dd>
+                    <dt>[[to]]</dt>
+                    <dd>[[toRate]]</dd>
+                </dl>
+            </div>
+        </template>
     </template>
 
     <script>
         class CurrencyExchange extends Polymer.Element {
-            static get is() {return 'currency-exchange';}
+            static get is() {
+                return 'currency-exchange';
+            }
+
+            static get properties() {
+                return {
+                    from: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    to: {
+                        type: String,
+                        reflectoToAttribute: true
+                    },
+                    toRate: {
+                        type: String,
+                        computed: '_getToRate(data)'
+                    }
+                }
+            }
+
+            _getToRate(data) {
+                return data.rates[this.to] || null;
+            }
+
+            update() {
+                this.$.request.generateRequest();
+            }
         }
 
         customElements.define(CurrencyExchange.is, CurrencyExchange);
